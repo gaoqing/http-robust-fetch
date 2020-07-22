@@ -146,11 +146,14 @@ function oneoffFetch(url, init) {
     if (mockTestOnlyFetch) {
         return mockTestOnlyFetch;
     }
-    const fetcher = (window && window.fetch) || require('node-fetch');
+
+    const isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
+    const fetcher = (isBrowser && window && window.fetch) || require('node-fetch');
+
     return () => fetcher(url, init);
 }
 
-module.exports = {robustHttpFetch, oneoffFetch};
+module.exports = exports = {robustHttpFetch, oneoffFetch};
 
 
 

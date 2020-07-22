@@ -69,10 +69,10 @@ resultAsPromise
 
 | Parameter                 | Required       | Type | Description   |	
 | :------------------------ |:-------------:|:-------------: | :-------------|
-| url	       |	true           |string | the resource destination url to make this request to
-| init          | true          |object     | it can have properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of node-fetch. However two settings are MANDATORY: ***'timeout'*** to time-box a request and ***'maxRequests'*** to limit the total number of requests to attempt.<br /> other properties refer to ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
-| callback 	       |	true	    |function        | it will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) or last request' result(a promise that might be eventually resolved or rejected)
-| optLogger 	       |	false	    |function        |optional, if any, will get called with a single string parameter to give small hints when making request
+| url	       |	true           |string | The resource destination url to make this request to
+| init          | true          |object     | It can have properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of node-fetch. <br />however two settings are MANDATORY: ***'timeout'*** to time-box a request and ***'maxRequests'*** to limit the total number of requests to attempt.<br /> other properties refer to ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
+| callback 	       |	true	    |function        | It will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) <br /> or last request' result(a promise that might be eventually resolved or rejected)
+| optLogger 	       |	false	    |function        |Optional, if any, will get called with a single string parameter to give small hints when making request
 
 
 ## Contributing
