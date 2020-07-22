@@ -3,7 +3,7 @@
   <a href="https://www.npmjs.com/package/robust-http-fetch">
   <img src="https://img.shields.io/badge/npm-v1.0.1-blue" />
   </a>
-  <a href="https://github.com/gaoqing/robust-http-fetch/LICENSE">
+  <a href="https://github.com/gaoqing/robust-http-fetch/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
   </a>
 <a href="https://codecov.io/gh/gaoqing/robust-http-fetch">
@@ -13,7 +13,7 @@
 
 ## Robust Http Fetch
 
-This robust-http-fetch is a light-weight and [100%-test-coverage](https://codecov.io/gh/gaoqing/robust-http-fetch) javascript util for robustly making fetch request.
+This robust-http-fetch is a light-weight and [100%-test-coverage](https://codecov.io/gh/gaoqing/robust-http-fetch) javascript util for robustly making http fetch request.
 
 The underlying fetch will be delegated to either [window.fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) when use in browser or [node-fetch](https://www.npmjs.com/package/node-fetch) when use in node server side.
 
@@ -39,23 +39,27 @@ Usage is as simple as below, can also refer to tests in [End2End tests](https://
 
  const apiUrl = "https://postman-echo.com/post";
  const body = {hello: 'world'};
- const resultAsPromise = new Promise(resolve => {
+
+ //Here use the Promise resolve callback function as the callback in 3rd parameter, but you can use any function as callback to fit yourself
+ const resultAsPromise = new Promise((resolve, reject) => {
      robustHttpFetch(
-         apiUrl,    // required, request url
+         apiUrl, // required, request url
          {
-             timeout: 3000,     // required, ie. request will wait 1500ms before firing another request
-             maxRequests: 3,    // required, ie. upto 3 requests to fire in case previous requests delayed or not resolved happily
+             timeout: 3000, // required, ie. here request will wait 1500ms before firing another request
+             maxRequests: 3, // required, ie. here upto 3 requests to fire in case previous requests delayed or not resolved happily
              method: 'POST',
              body: JSON.stringify(body),
              headers: {'Content-Type': 'application/json'}
          },
-         resolve,   // required, callback to invoke
-         console.log    //optional
+         resolve, // required, callback function to be invoked with a Promise object later
+         console.log // optional function
     );
  });
 
 //Do your stuff with this promise as usual, for example
-resultAsPromise.then(res => res.json()).then(data => console.log(data));
+resultAsPromise
+    .then(res => res.json())
+    .then(data => console.log(data));
 ```
 
  Arguments: 
@@ -66,7 +70,7 @@ resultAsPromise.then(res => res.json()).then(data => console.log(data));
 | Parameter                 | Required       | Type | Description   |	
 | :------------------------ |:-------------:|:-------------: | :-------------|
 | url	       |	true           |string | the resource destination url to make this request to
-| init          | true          |object     | it can have properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of node-fetch. However only two MANDATORY settings : ***'timeout'*** to time-box a request and ***'maxRequests'*** to limit the number of total requests to attempt.<br /> other properties refer to ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
+| init          | true          |object     | it can have properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of node-fetch. However two settings are MANDATORY: ***'timeout'*** to time-box a request and ***'maxRequests'*** to limit the total number of requests to attempt.<br /> other properties refer to ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
 | callback 	       |	true	    |function        | it will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) or last request' result(a promise that might be eventually resolved or rejected)
 | optLogger 	       |	false	    |function        |optional, if any, will get called with a single string parameter to give small hints when making request
 

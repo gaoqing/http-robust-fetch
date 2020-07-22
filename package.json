@@ -25,5 +25,18 @@
     "eslint-plugin-html": "^5.0.3",
     "eslint-plugin-jest": "^22.4.1",
     "jest": "^24.5.0"
-  }
+  },
+  "keywords": [
+    "fetch",
+    "http-fetch",
+    "robust-fetch",
+    "robust-http-fetch",
+    "resilent-fetch",
+    "resilent-http-fetch",
+    "node-fetch",
+    "browser-fetch",
+    "window.fetch",
+    "api-fetch",
+    "fetch-request"
+  ]
 }
