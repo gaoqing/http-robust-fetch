@@ -1,0 +1,29 @@
+{
+  "name": "robust-http-fetch",
+  "description": "Redo http fetch request when timeout or failed, aim at providing resilience over plain one-off fetch request by doing retry delayed/failed requests",
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaoqing/robust-http-fetch.git"
+  },
+  "author": {
+    "name": "lsz",
+    "email": "shaozhan2008@gmail.com"
+  },
+  "scripts": {
+    "test": "jest --collectCoverage "
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^4.16.6",
+    "@types/jest": "^24.0.11",
+    "eslint": "^5.15.3",
+    "eslint-plugin-html": "^5.0.3",
+    "eslint-plugin-jest": "^22.4.1",
+    "jest": "^24.5.0"
+  }
+}
