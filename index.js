@@ -1,5 +1,5 @@
 /**
- @param url, string, resource destination url to make request to, the fetch request will be delegated to either window.fetch(when use in browser) or npm module node-fetch(when use in node server side).
+ @param url, string, resource destination url to make request to, the fetch request will be delegated either to window.fetch(when use in browser) or npm module node-fetch(when use in node server side).
  @param init, object, can have properties in 'init' parameter of window.fetch api(https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
  or in 'options' parameter of node-fetch library (https://www.npmjs.com/package/node-fetch#options)
  beside those init/options settings from window.fetch or node-fetch, it has two MANDATORY settings: 'init.timeout' to time-box a request and 'init.maxRequests' to limit the total number of requests to attempt
@@ -147,8 +147,8 @@ function oneoffFetch(url, init) {
         return mockTestOnlyFetch;
     }
 
-    const isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
-    const fetcher = (isBrowser() && window && window.fetch) || require('node-fetch');
+    const isBrowser = new Function("try {return window && this===window;}catch(e){ return false;}");
+    const fetcher = (isBrowser() && window.fetch) || require('node-fetch');
 
     return () => fetcher(url, init);
 }
