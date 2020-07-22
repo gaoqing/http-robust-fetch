@@ -148,7 +148,7 @@ function oneoffFetch(url, init) {
     }
 
     const isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
-    const fetcher = (isBrowser && window && window.fetch) || require('node-fetch');
+    const fetcher = (isBrowser() && window && window.fetch) || require('node-fetch');
 
     return () => fetcher(url, init);
 }

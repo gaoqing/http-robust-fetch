@@ -1,7 +1,7 @@
 <h1 align="center">Robust Http Fetch</h1>
 <p align="center">
   <a href="https://www.npmjs.com/package/robust-http-fetch">
-  <img src="https://img.shields.io/badge/npm-v1.0.4-blue" />
+  <img src="https://img.shields.io/badge/npm-v1.0.5-blue" />
   </a>
   <a href="https://github.com/gaoqing/robust-http-fetch/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
@@ -70,8 +70,8 @@ resultAsPromise
 | Parameter                 | Required       | Type | Description   |	
 | :------------------------ |:-------------:|:-------------: | :-------------|
 | url	       |	true           |string | The resource destination url to make this request to
-| init          | true          |object     | It can have properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of node-fetch. <br />however two settings are MANDATORY: ***'timeout'*** to time-box a request and ***'maxRequests'*** to limit the total number of requests to attempt.<br /> other properties refer to ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
-| callback 	       |	true	    |function        | It will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) <br /> or last request' result(a promise that might be eventually resolved or rejected)
+| init          | true          |object     | It can have properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of node-fetch. <br /><br />However two settings are MANDATORY: ***'timeout'*** to time-box a request and ***'maxRequests'*** to limit the total number of requests to attempt.<br /><br /> Other properties refer to ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
+| callback 	       |	true	    |function        | It will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) <br /> or with last request' result(a promise that might be eventually resolved or rejected)
 | optLogger 	       |	false	    |function        |Optional, if any, will get called with a single string parameter to give small hints when making request
 
 
