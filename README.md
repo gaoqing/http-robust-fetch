@@ -1,7 +1,7 @@
 <h1 align="center">Robust Http Fetch</h1>
 <p align="center">
   <a href="https://www.npmjs.com/package/robust-http-fetch">
-  <img src="https://img.shields.io/badge/npm-v1.0.1-blue" />
+  <img src="https://img.shields.io/badge/npm-v1.0.4-blue" />
   </a>
   <a href="https://github.com/gaoqing/robust-http-fetch/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
