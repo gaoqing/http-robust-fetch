@@ -95,6 +95,28 @@ function robustHttpFetch(
     scheduleFetch(0, 0);
 }
 
+function oneoffFetch(url, init) {
+    const {mockTestOnlyFetch} = init;
+    if (mockTestOnlyFetch) {
+        return mockTestOnlyFetch;
+    }
+
+    const isBrowser = new Function("try {return window && this===window;}catch(e){ return false;}");
+    const fetcher = (isBrowser() && window.fetch) || require('node-fetch');
+
+    return () => fetcher(url, init);
+}
+
+function getLogger(optLogger) {
+    const logger = typeof optLogger === 'function' ? optLogger : (ignored) => {
+    };
+    return (args) => logger(new Date().toISOString() + ': ' + args);
+}
+
+function timeoutMessage(seqNum, timeout) {
+    return `Request#${seqNum} no response in ${timeout}ms, fire another request`;
+}
+
 function checkArgs(...args) {
     const argsCheckedInfo = [];
 
@@ -131,29 +153,10 @@ function checkArgs(...args) {
     }
 }
 
-function timeoutMessage(seqNum, timeout) {
-    return `Request#${seqNum} no response in ${timeout}ms, fire another request`;
-}
+robustHttpFetch.oneoffFetch = oneoffFetch;
 
-function getLogger(optLogger) {
-    const logger = typeof optLogger === 'function' ? optLogger : (ignored) => {
-    };
-    return (args) => logger(new Date().toISOString() + ': ' + args);
-}
+module.exports = exports = robustHttpFetch;
 
-function oneoffFetch(url, init) {
-    const {mockTestOnlyFetch} = init;
-    if (mockTestOnlyFetch) {
-        return mockTestOnlyFetch;
-    }
-
-    const isBrowser = new Function("try {return window && this===window;}catch(e){ return false;}");
-    const fetcher = (isBrowser() && window.fetch) || require('node-fetch');
-
-    return () => fetcher(url, init);
-}
-
-module.exports = exports = {robustHttpFetch, oneoffFetch};
 
 
 

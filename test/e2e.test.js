@@ -1,4 +1,4 @@
-const {robustHttpFetch} = require("../index");
+const robustHttpFetch = require("../index");
 
 describe('e2e tests', () => {
     beforeEach(()=>jest.setTimeout(15 * 1000));

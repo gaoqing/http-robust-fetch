@@ -1,6 +1,6 @@
 {
   "name": "robust-http-fetch",
-  "description": "Redo http fetch request when timeout or failed, aim at providing resilience over plain one-off fetch request by doing retry delayed/failed requests",
+  "description": "Redo the http request when timeout or failed, aim at providing resilience over plain one-off fetch request by doing retry delayed/failed requests",
   "version": "1.0.6",
   "repository": {
     "type": "git",
@@ -26,9 +26,16 @@
     "eslint-plugin-jest": "^22.4.1",
     "jest": "^24.5.0"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "package.json"
+  ],
   "keywords": [
     "fetch",
     "http-fetch",
+    "http fetch",
     "robust-fetch",
     "robust-http-fetch",
     "resilent-fetch",
@@ -37,6 +44,7 @@
     "browser-fetch",
     "window.fetch",
     "api-fetch",
-    "fetch-request"
+    "fetch-request",
+    "fetch request"
   ]
 }

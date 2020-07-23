@@ -1,7 +1,7 @@
 <h1 align="center">Robust Http Fetch</h1>
 <p align="center">
   <a href="https://www.npmjs.com/package/robust-http-fetch">
-  <img src="https://img.shields.io/badge/npm-v1.0.6-blue" />
+  <img src="https://img.shields.io/badge/npm-v1.0.7-blue" />
   </a>
   <a href="https://github.com/gaoqing/robust-http-fetch/blob/master/LICENSE">
     <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
@@ -17,9 +17,9 @@ This robust-http-fetch is a light-weight and [100%-test-coverage](https://codeco
 
 The underlying fetch will be delegated to either [window.fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) when use in browser or [node-fetch](https://www.npmjs.com/package/node-fetch) when use in node server side.
 
-It makes request to url endpoint, if response is not arrived in timely manner('init.timeout' settings below) or failed (fragile network etc), it will fire another same request as backup(up to 'init.maxRequests' requests to fire if none of them are happily resolved). It waits upto 'init.timeout' millisecond for response, if more than one requests are in-flight, the earliest resolved one will be resolved with and returned. Details refer to usage section in this page
+It makes request to url endpoint, if response is not arrived in timely manner('init.timeout' settings below) or failed (fragile network etc), it will fire another same request as backup(up to 'init.maxRequests' requests to fire if none of them are happily resolved). It waits upto 'init.timeout' milliseconds for response, if more than one requests are in-flight, the earliest resolved one will be resolved with and returned. Details refer to usage section in this page
 
-***Caveats***: only use this utils when your request is [idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent), for example GET, no matter how many times calling GET, should have same result and data integrity still maintained.
+***Caveats***: only use this utils when your request is [idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent), for example GET, no matter how many times calling GET, should have same result and data integrity still maintained,
 as well as DELETE. In case of POST/PUT, make sure your server side(or rely on DB constraints etc) to maintain the integrity, for example backend to perform checking if previous requests have completed then abort duplicated requests etc.
 
 ## Installation
@@ -32,22 +32,23 @@ npm install robust-http-fetch
 
 ## Usage
 
-Usage is as simple as below, can refer to tests in [End2End tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/e2e.test.js) or [unit tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/index.test.js))
+Usage is as simple as below, can also refer to tests in [end2end tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/e2e.test.js) or [unit tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/index.test.js))
 
 ```javascript
- const { robustHttpFetch } = require('robust-http-fetch'); 
+ const robustHttpFetch = require('robust-http-fetch'); 
 
- const apiUrl = "https://postman-echo.com/post";
+ const requestUrl = "https://postman-echo.com/post";
  const body = {hello: 'world'};
 
- //here use the Promise resolve callback function as the callback in 3rd parameter, 
- //but you can use any callback function which accept a Promise object as its argument.
+ // below sample use the Promise resolve callback function as the callback to the 3rd parameter, 
+ // but you can use your custom callback function which accept a Promise object as its argument.
  const resultAsPromise = new Promise((resolve, reject) => {
      robustHttpFetch(
-         apiUrl, // required, request url
+         requestUrl, // required
          {
              timeout: 3000, // required, ie. here request will wait 3000ms before firing another request
              maxRequests: 3, // required, ie. here upto 3 requests to fire in case previous requests delayed or not well resolved
+             // below properties are optional, usage to refer to window.fetch(init settings)/node-fetch(options settings) 
              method: 'POST',
              body: JSON.stringify(body),
              headers: {'Content-Type': 'application/json'}
@@ -57,7 +58,7 @@ Usage is as simple as below, can refer to tests in [End2End tests](https://githu
     );
  });
 
-//Do your stuff with this promise as usual, for example
+//do your stuff with this promise as usual, for example
 resultAsPromise
     .then(res => res.json())
     .then(data => console.log(data));
@@ -65,7 +66,7 @@ resultAsPromise
 
  Arguments: 
  
- ```const {robustHttpFetch} = require('robust-http-fetch')``` robustHttpFetch is a javascript function to use, which accept 4 parameters as following
+ ```const robustHttpFetch = require('robust-http-fetch')```, it is a javascript function to use, which accept 4 parameters as followings
  
 
 | Parameter                 | Required       | Type | Description   |	
