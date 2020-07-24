@@ -1,30 +1,36 @@
 <h1 align="center">Robust Http Fetch</h1>
 <p align="center">
   <a href="https://www.npmjs.com/package/robust-http-fetch">
-  <img src="https://img.shields.io/badge/npm-v1.0.7-blue" />
+    <img src="https://img.shields.io/npm/v/robust-http-fetch" />
   </a>
-  <a href="https://github.com/gaoqing/robust-http-fetch/blob/master/LICENSE">
-    <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
+   <a href="https://github.com/gaoqing/robust-http-fetch/blob/master/LICENSE">
+        <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg" target="_blank" />
+    </a>
+  <a href="https://travis-ci.org/github/gaoqing/robust-http-fetch">
+     <img src="https://travis-ci.org/gaoqing/robust-http-fetch.svg?branch=master" />
   </a>
-<a href="https://codecov.io/gh/gaoqing/robust-http-fetch">
-  <img src="https://codecov.io/gh/gaoqing/robust-http-fetch/branch/master/graph/badge.svg" />
-</a>
+  <a href="https://codecov.io/gh/gaoqing/robust-http-fetch">
+    <img src="https://codecov.io/gh/gaoqing/robust-http-fetch/branch/master/graph/badge.svg" />
+  </a>
+  
 </p>
 
 ## Robust Http Fetch
 
-This robust-http-fetch is a light-weight and [100%-test-coverage](https://codecov.io/gh/gaoqing/robust-http-fetch) javascript utils for robustly making http fetch request.
+This robust-http-fetch is a light-weight and [100%-test-coverage](https://codecov.io/gh/gaoqing/robust-http-fetch) javascript utils helping to make robust http fetch request.
 
-The underlying fetch will be delegated to either [window.fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) when use in browser or [node-fetch](https://www.npmjs.com/package/node-fetch) when use in node server side.
+The underlying fetch will be delegated either to [window.fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) when use in browser or [node-fetch](https://www.npmjs.com/package/node-fetch) when use in node server.
 
-It makes request to url endpoint, if response is not arrived in timely manner('init.timeout' settings below) or failed (fragile network etc), it will fire another same request as backup(up to 'init.maxRequests' requests to fire if none of them are happily resolved). It waits upto 'init.timeout' milliseconds for response, if more than one requests are in-flight, the earliest resolved one will be resolved with and returned. Details refer to usage section in this page
+It makes request to the provided url, if response is not received in timely manner('init.timeout' config below) or failed (fragile network etc), it will fire another request to race(up to 'init.maxRequests' requests to fire if none of them are well resolved). 
+
+Request waits upto 'init.timeout' milliseconds for response before sending a retry, if more than one request are still in-flight, then they are racing, the earliest good response will be resolved with and returned. Details refer to usage section in this page.
 
 ***Caveats***: only use this utils when your request is [idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent), for example GET, no matter how many times calling GET, should have same result and data integrity still maintained,
-as well as DELETE. In case of POST/PUT, make sure your server side(or rely on DB constraints etc) to maintain the integrity, for example backend to perform checking if previous requests have completed then abort duplicated requests etc.
+likewise for DELETE. In case of POST/PUT, make sure your server side to maintain the data integrity, for example backend to perform checking if previous requests have completed then abort duplicated requests etc.
 
 ## Installation
 
-Use the package manager [npm](https://www.npmjs.com/package/robust-http-fetch) to install robust-http-fetch.
+Use the package manager [NPM](https://www.npmjs.com/package/robust-http-fetch) to install robust-http-fetch.
 
 ```bash
 npm install robust-http-fetch
@@ -37,24 +43,31 @@ Usage is as simple as below, can also refer to tests in [end2end tests](https://
 ```javascript
  const robustHttpFetch = require('robust-http-fetch'); 
 
- const requestUrl = "https://postman-echo.com/post";
+ const url = "https://postman-echo.com/post";
  const body = {hello: 'world'};
 
- // below sample use the Promise resolve callback function as the callback to the 3rd parameter, 
- // but you can use your custom callback function which accept a Promise object as its argument.
- const resultAsPromise = new Promise((resolve, reject) => {
+ /**
+ * below example use the Promise resolve callback function as the callback to the 3rd parameter, 
+ * but you can use your custom callback function which accept a Promise object as its argument.
+ * @input url, required, the resource destination
+ * @input timeout, required, here request will wait 3000ms before firing retry request
+ * @input maxRequests, required, here upto 3 requests to fire in case previous requests delayed or not well resolved
+ * @input method/body/headers...and more, on demand properties, usage refer to window.fetch(init config)/node-fetch(options config)
+ * @input resolve, required, callback function to be invoked with a Promise object later
+ * @input console.log,  optional function, any function accept a string argument 
+ **/    
+const resultAsPromise = new Promise((resolve, reject) => {
      robustHttpFetch(
-         requestUrl, // required
+         url, 
          {
-             timeout: 3000, // required, ie. here request will wait 3000ms before firing another request
-             maxRequests: 3, // required, ie. here upto 3 requests to fire in case previous requests delayed or not well resolved
-             // below properties are optional, usage to refer to window.fetch(init settings)/node-fetch(options settings) 
+             timeout: 3000,
+             maxRequests: 3, 
              method: 'POST',
              body: JSON.stringify(body),
              headers: {'Content-Type': 'application/json'}
          },
-         resolve, // required, callback function to be invoked with a Promise object later
-         console.log // optional function
+         resolve,
+         console.log
     );
  });
 

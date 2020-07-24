@@ -33,18 +33,19 @@
     "package.json"
   ],
   "keywords": [
+    "http",
+    "http request",
     "fetch",
-    "http-fetch",
     "http fetch",
+    "http-fetch",
     "robust-fetch",
     "robust-http-fetch",
     "resilent-fetch",
     "resilent-http-fetch",
     "node-fetch",
-    "browser-fetch",
     "window.fetch",
-    "api-fetch",
     "fetch-request",
-    "fetch request"
+    "fetch request",
+    "javascript fetch",
   ]
 }

@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "10"
+
+script:
+  # Run test script
+  - npm run test
