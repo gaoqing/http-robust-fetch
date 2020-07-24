@@ -47,5 +47,8 @@
     "fetch-request",
     "fetch request",
     "javascript fetch"
-  ]
+  ],
+  "publishConfig": {
+    "registry":"http://registry.npmjs.org/"
+  }
 }
