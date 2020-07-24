@@ -50,10 +50,10 @@ Usage is as simple as below, can also refer to tests in [end2end tests](https://
  * below example use the Promise resolve callback function as the callback to the 3rd parameter, 
  * but you can use your custom callback function which accept a Promise object as its argument.
  * @input url, required, the resource destination
- * @input timeout, required, here request will wait 3000ms before firing retry request
- * @input maxRequests, required, here upto 3 requests to fire in case previous requests delayed or not well resolved
- * @input method/body/headers...and more, on demand properties, usage refer to window.fetch(init config)/node-fetch(options config)
- * @input resolve, required, callback function to be invoked with a Promise object later
+ * @input {timeout}, required, here request will wait 3000ms before firing retry request
+ * @input {maxRequests}, required, here upto 3 requests to fire in case previous requests delayed or not well resolved
+ * @input {method/body/headers}...and more, on demand properties, usage refer to window.fetch(init config)/node-fetch(options config)
+ * @input resolve, required, any callback function to be invoked with a Promise object later
  * @input console.log,  optional function, any function accept a string argument 
  **/    
 const resultAsPromise = new Promise((resolve, reject) => {
