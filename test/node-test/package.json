@@ -1,0 +1,14 @@
+{
+  "name": "node-test",
+  "version": "1.0.0",
+  "description": "for demo on how to use this utils only",
+  "main": "handy-sample.js",
+  "scripts": {
+    "test": "npm i robust-http-fetch && node handy-sample.js"
+  },
+  "author": "lsz",
+  "license": "MIT",
+  "dependencies": {
+    "robust-http-fetch": "^1.0.9"
+  }
+}

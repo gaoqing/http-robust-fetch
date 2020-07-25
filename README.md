@@ -85,11 +85,20 @@ resultAsPromise
 
 | Parameter                 | Required       | Type | Description   |	
 | :------------------------ |:-------------:|:-------------: | :-------------|
-| url	       |	true           |string | The resource destination url to make this request to
-| init          | true          |object     | 2 properties are MANDATORY: ***'timeout'*** to time-box a single request and ***'maxRequests'*** to limit the total number of requests to attempt. <br /><br />Besides it can have on-demand properties in ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of `window.fetch` or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of `node-fetch`. <br /> Please refer to link ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
+| url	       |	true           |string | The resource destination url this request will send to
+| init          | true          |object     | 2 properties are MANDATORY: ***'timeout'*** to time-box a single request and ***'maxRequests'*** to limit the total number of requests to attempt. <br /><br />Besides those 2, it can have on-demand properties from ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of `window.fetch` or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of `node-fetch`. <br /> Please refer to link ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
 | callback 	       |	true	    |function        | It will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) <br /> or with last request' result(a promise that might be eventually resolved or rejected)
 | optLogger 	       |	false	    |function        |Optional, if any, will get called with a single string parameter to give small hints when making request
 
+
+## Try
+To do a quick try, few steps to load up the module and execute a test:
+
+Step 1: `git clone https://github.com/gaoqing/robust-http-fetch.git` <br />
+Step 2: `cd robust-http-fetch/test/node-test` <br />
+Step 3: `npm run test`<br />
+
+You will see some output in the console log showing some request have been made.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
