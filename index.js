@@ -1,11 +1,20 @@
 /**
- @param url, string, resource destination url to make request to, the fetch request will be delegated either to window.fetch(when use in browser) or npm module node-fetch(when use in node server side).
- @param init, object, can have properties in 'init' parameter of window.fetch api(https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
- or in 'options' parameter of node-fetch library (https://www.npmjs.com/package/node-fetch#options)
- beside those init/options settings from window.fetch or node-fetch, it has two MANDATORY settings: 'init.timeout' to time-box a request and 'init.maxRequests' to limit the total number of requests to attempt
- @param callback, will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) or last request result(a promise that might be eventually resolved or rejected)
- @param optLogger, optional function, will be called with a single string parameter to give a hint when making request.
+ * @param url, string, resource destination url to make request to, the fetch request will be delegated either to window.fetch(when use in browser) or npm module node-fetch(when use in node server side).
+ * @param init, object, can have properties in 'init' parameter of window.fetch api(https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
+ * or in 'options' parameter of node-fetch library (https://www.npmjs.com/package/node-fetch#options)
+ * beside those init/options settings from window.fetch or node-fetch, it has two MANDATORY settings: 'init.timeout' to time-box a request and 'init.maxRequests' to limit the total number of requests to attempt
+ * @param optLogger, optional function, will be called with a single string parameter to give a hint when making request.
+ *
+ * @return a promise resolved with a positive result or a rejected promise if eventually failed
  */
+function robustHttpFetchAsPromise(url,
+                                  init,
+                                  optLogger) {
+    return new Promise((resolve => {
+        robustHttpFetch(url, init, resolve, optLogger);
+    }));
+}
+
 function robustHttpFetch(
     url,
     init,
@@ -153,9 +162,10 @@ function checkArgs(...args) {
     }
 }
 
-robustHttpFetch.oneoffFetch = oneoffFetch;
+robustHttpFetchAsPromise.oneoffFetch = oneoffFetch;
+robustHttpFetchAsPromise.robustHttpFetch = robustHttpFetch;
 
-module.exports = exports = robustHttpFetch;
+module.exports = exports = robustHttpFetchAsPromise;
 
 
 

@@ -42,52 +42,47 @@ npm install robust-http-fetch
 Usage is as simple as below, can also refer to tests in [end2end tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/e2e.test.js) or [unit tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/index.test.js))
 
 ```javascript
- const robustHttpFetch = require('robust-http-fetch'); 
+ const robustHttpFetchAsPromise = require('robust-http-fetch'); 
 
  const url = "https://postman-echo.com/post";
  const body = {hello: 'world'};
 
  /**
- * below input arguments for demonstration only. It use the Promise resolve callback function as the callback to the 3rd parameter, 
- * but you can use your custom callback function which accept a Promise object as its argument.
+ * below input arguments for demonstration only
  * @input url, required, the resource destination
  * @input {timeout}, required, here request will wait 3000ms before firing retry request
  * @input {maxRequests}, required, here upto 3 requests to fire in case previous requests delayed or not well resolved
  * @input {method/body/headers}...and more, on demand properties, usage refer to `window.fetch`(init config)/`node-fetch`(options config)
- * @input resolve, required, any callback function to be invoked with a Promise object later
  * @input console.log,  optional function, any function accept a string argument 
+ *
+ * @return a promise resolved with a positive result or a rejected promise if eventually failed
  **/    
-const resultAsPromise = new Promise((resolve, reject) => {
-     robustHttpFetch(
-         url, 
-         {
+const resultPromise = robustHttpFetchAsPromise(url, {
              timeout: 3000,
              maxRequests: 3, 
              method: 'POST',
              body: JSON.stringify(body),
              headers: {'Content-Type': 'application/json'}
          },
-         resolve,
          console.log
-    );
- });
+);   
+
 
 //do your stuff with this promise as usual, for example
-resultAsPromise
+resultPromise
     .then(res => res.json())
     .then(data => console.log(data));
 ```
 
  Arguments: 
  
- ```const robustHttpFetch = require('robust-http-fetch')```, it is a javascript function to use, which accept 4 parameters as followings
+ ```const robustHttpFetchAsPromise = require('robust-http-fetch')```, it is a javascript function to use, which accept 3 parameters as followings
  
 
 | Parameter                 | Required       | Type | Description   |	
 | :------------------------ |:-------------:|:-------------: | :-------------|
 | url	       |	true           |string | The resource destination url this request will send to
 | init          | true          |object     | 2 properties are MANDATORY: ***'timeout'*** to time-box a single request and ***'maxRequests'*** to limit the total number of requests to attempt. <br /><br />Besides those 2, it can have on-demand properties from ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) parameter of `window.fetch` or ['options'](https://www.npmjs.com/package/node-fetch#options) parameter of `node-fetch`. <br /> Please refer to link ['init'](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters) of window.fetch or ['options'](https://www.npmjs.com/package/node-fetch#options) of node-fetch
-| callback 	       |	true	    |function        | It will be invoked with a resolved promise(if a request is well finished before attempting all the retry requests) <br /> or with last request' result(a promise that might be eventually resolved or rejected)
 | optLogger 	       |	false	    |function        |Optional, if any, will get called with a single string parameter to give small hints when making request
 
 

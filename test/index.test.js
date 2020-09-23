@@ -1,5 +1,6 @@
-const robustHttpFetch = require("../index");
-const oneoffFetch = robustHttpFetch.oneoffFetch;
+const robustHttpFetchAsPromise = require("../index");
+const robustHttpFetch = robustHttpFetchAsPromise.robustHttpFetch;
+const oneoffFetch = robustHttpFetchAsPromise.oneoffFetch;
 
 // const logger = console.log;
 const logger = jest.fn();
