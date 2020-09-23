@@ -16,7 +16,7 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": ">=2.6.1"
   },
   "devDependencies": {
     "@types/eslint": "^4.16.6",
