@@ -24,14 +24,14 @@ function robustHttpFetch(
     checkArgs(...arguments);
     const logger = getLogger(optLogger);
     const {timeout, maxRequests} = init;
-    const oneoffFetchFn = oneoffFetch(url, init);
+    const fetcher = oneoffFetch(url, init);
 
     // container holding scheduled timer, entry is a 2-values array, 1st is SN(SeqNumber) of scheduled request, 2nd is timer ID;
     const queuedTimers = [];
 
-    const oneoffFetchFnWrapper = () => {
+    const oneoffFetchWrapper = () => {
         try {
-            const promise = oneoffFetchFn();
+            const promise = fetcher();
             return Promise.resolve(promise);
         } catch (e) {
             return Promise.reject(e.message);
@@ -40,7 +40,7 @@ function robustHttpFetch(
 
     const doFetch = (cb, sn, startTime) => {
         logger(`#${sn} request about to fire`);
-        const promise = oneoffFetchFnWrapper();
+        const promise = oneoffFetchWrapper();
         cb(promise, sn, startTime);
     };
 
@@ -111,9 +111,9 @@ function oneoffFetch(url, init) {
     }
 
     const isBrowser = new Function("try {return window && this===window;}catch(e){ return false;}");
-    const fetcher = (isBrowser() && window.fetch) || require('node-fetch');
+    const request = (isBrowser() && window.fetch) || require('node-fetch');
 
-    return () => fetcher(url, init);
+    return () => request(url, init);
 }
 
 function getLogger(optLogger) {
@@ -129,13 +129,17 @@ function timeoutMessage(seqNum, timeout) {
 function checkArgs(...args) {
     const argsCheckedInfo = [];
 
-    try {
-        new URL(args[0]);
-    } catch (e) {
+    const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|localhost|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    if (!!!urlPattern.test(args[0])) {
         argsCheckedInfo.push(`url need to be provided as correct URL string value as web target for this request`);
     }
 
-    if (typeof args[1] !== 'object') {
+    if (!args[1] || typeof args[1] !== 'object') {
         argsCheckedInfo.push(`init parameter need to be provided as an object, at least give timeout and maxRequests properties`);
     } else {
         const {timeout, maxRequests} = args[1];

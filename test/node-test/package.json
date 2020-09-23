@@ -9,6 +9,6 @@
   "author": "lsz",
   "license": "MIT",
   "dependencies": {
-    "robust-http-fetch": "^1.1.6"
+    "robust-http-fetch": "^1.1.8"
   }
 }
