@@ -42,7 +42,7 @@ npm install robust-http-fetch
 Usage is as simple as below, can also refer to tests in [end2end tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/e2e.test.js) or [unit tests](https://github.com/gaoqing/robust-http-fetch/blob/master/test/index.test.js))
 
 ```javascript
- const robustHttpFetchAsPromise = require('robust-http-fetch'); 
+ const robustHttpFetch = require('robust-http-fetch'); 
 
  const url = "https://postman-echo.com/post";
  const body = {hello: 'world'};
@@ -50,14 +50,15 @@ Usage is as simple as below, can also refer to tests in [end2end tests](https://
  /**
  * below input arguments for demonstration only
  * @input url, required, the resource destination
- * @input {timeout}, required, here request will wait 3000ms before firing retry request
- * @input {maxRequests}, required, here upto 3 requests to fire in case previous requests delayed or not well resolved
- * @input {method/body/headers}...and more, on demand properties, usage refer to `window.fetch`(init config)/`node-fetch`(options config)
- * @input console.log,  optional function, any function accept a string argument 
+ * @input init object, required, sample properties
+ *   {timeout}, required, below example will wait 3000ms before firing retry request
+ *   {maxRequests}, required, below example upto 3 requests to fire in case previous requests delayed or not well resolved
+ *   {method/body/headers}...and more, on demand properties, usage refer to `window.fetch`(init config)/`node-fetch`(options config)
+ * @input optional function, any function accept a string argument, below example, use console.log 
  *
  * @return a promise resolved with a positive result or a rejected promise if eventually failed
  **/    
-const resultPromise = robustHttpFetchAsPromise(url, {
+const resultPromise = robustHttpFetch(url, {
              timeout: 3000,
              maxRequests: 3, 
              method: 'POST',
@@ -76,7 +77,7 @@ resultPromise
 
  Arguments: 
  
- ```const robustHttpFetchAsPromise = require('robust-http-fetch')```, it is a javascript function to use, which accept 3 parameters as followings
+ ```const robustHttpFetch = require('robust-http-fetch')```, it is a javascript function to use, which accept 3 parameters as followings
  
 
 | Parameter                 | Required       | Type | Description   |	

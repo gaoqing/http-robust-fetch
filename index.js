@@ -117,9 +117,11 @@ function oneoffFetch(url, init) {
 }
 
 function getLogger(optLogger) {
-    const logger = typeof optLogger === 'function' ? optLogger : (ignored) => {
-    };
-    return (args) => logger(new Date().toISOString() + ': ' + args);
+    if (typeof optLogger !== 'function') {
+        return (ignored) => {
+        };
+    }
+    return (args) => optLogger(new Date().toISOString() + ': ' + args);
 }
 
 function timeoutMessage(seqNum, timeout) {
