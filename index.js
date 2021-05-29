@@ -7,20 +7,13 @@
  *
  * @return a promise resolved with a positive result or a rejected promise if eventually failed
  */
-function robustHttpFetchAsPromise(url,
-                                  init,
-                                  optLogger) {
+function robustHttpFetchAsPromise(url, init, optLogger) {
     return new Promise((resolve => {
         robustHttpFetch(url, init, resolve, optLogger);
     }));
 }
 
-function robustHttpFetch(
-    url,
-    init,
-    callback,
-    optLogger
-) {
+function robustHttpFetch(url, init, callback, optLogger) {
     checkArgs(...arguments);
     const logger = getLogger(optLogger);
     const {timeout, maxRequests} = init;
