@@ -1,7 +1,7 @@
 {
   "name": "robust-http-fetch",
   "description": "Redo the http request when timeout or failed, aim at providing resilience over plain one-off fetch request by doing retry delayed/failed requests",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/gaoqing/robust-http-fetch.git"
