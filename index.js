@@ -15,26 +15,23 @@ function robustHttpFetchAsPromise(url, init, optLogger) {
 
 function robustHttpFetch(url, init, callback, optLogger) {
     checkArgs(...arguments);
-    const logger = getLogger(optLogger);
     const {timeout, maxRequests} = init;
-    const fetcher = oneoffFetch(url, init);
+    const logger = getLogger(optLogger);
+    const worker = requestWorker(url, init);
 
     // container holding scheduled timer, entry is a 2-values array, 1st is SN(SeqNumber) of scheduled request, 2nd is timer ID;
     const queuedTimers = [];
 
-    const oneoffFetchWrapper = () => {
-        try {
-            const promise = fetcher();
-            return Promise.resolve(promise);
-        } catch (e) {
-            return Promise.reject(e.message);
-        }
-    };
-
     const doFetch = (cb, sn, startTime) => {
         logger(`#${sn} request about to fire`);
-        const promise = oneoffFetchWrapper();
-        cb(promise, sn, startTime);
+        let result;
+        try {
+            const promise = worker();
+            result = Promise.resolve(promise);
+        } catch (e) {
+            result = Promise.reject(e.message);
+        }
+        cb(result, sn, startTime);
     };
 
     const invokeCallback = (promise, sn, startTime) => {
@@ -97,7 +94,7 @@ function robustHttpFetch(url, init, callback, optLogger) {
     scheduleFetch(0, 0);
 }
 
-function oneoffFetch(url, init) {
+function requestWorker(url, init) {
     const {mockTestOnlyFetch} = init;
     if (mockTestOnlyFetch) {
         return mockTestOnlyFetch;
@@ -161,7 +158,7 @@ function checkArgs(...args) {
     }
 }
 
-robustHttpFetchAsPromise.oneoffFetch = oneoffFetch;
+robustHttpFetchAsPromise.oneoffFetch = requestWorker;
 robustHttpFetchAsPromise.robustHttpFetch = robustHttpFetch;
 
 module.exports = exports = robustHttpFetchAsPromise;
